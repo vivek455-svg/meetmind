@@ -1,36 +1,42 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Meetmind — landing page
 
-## Getting Started
+Next.js 16 (App Router, static export-ready) build of the Meetmind landing page from Figma
+(`Frame 2147241524` in the Meetmind file).
 
-First, run the development server:
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+FIGMA_TOKEN=figd_xxx npm run fetch-assets   # one-time: pulls the photos from Figma into public/images
+npm run dev                                  # http://localhost:3000
+npm run build && npm start                   # production
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`fetch-assets` needs a Figma personal access token (Figma → Settings → Security → Personal access
+tokens, scope "File content: read-only"). It downloads every raster image used on the page and
+converts it to WebP. Icons and logos are already in `public/icons` and `public/logos` (exported
+from the same file as SVG). Until the photos are fetched, image slots show a soft tint.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/app/            layout (fonts, metadata), page, globals.css (tokens + all motion)
+src/components/     one file per section, plus Pic (next/image wrapper) and Reveal (scroll observer)
+src/lib/images.ts   image manifest (paths + intrinsic sizes)
+scripts/            fetch-figma-assets.mjs
+```
 
-## Learn More
+## Motion
 
-To learn more about Next.js, take a look at the following resources:
+- **Appear effects**: add `data-reveal` (`""`, `"scale"`, `"blur"`, `"fade"`, `"group"`) and an
+  optional `--d` delay. A single IntersectionObserver in `Reveal.tsx` toggles `.is-in`.
+- **Illustration loops** live inside `.anim-scope` and only play while on screen.
+- **Count-ups**: `data-count="92"` inside a revealed element.
+- Everything respects `prefers-reduced-motion`, and content is fully visible without JavaScript.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Performance
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Server components everywhere except the nav, FAQ accordion and the reveal observer. Local fonts
+(Geist, Inria Serif italic, Caveat) with `display: swap`, AVIF/WebP via `next/image`, and only
+compositor-friendly animations (transform/opacity). Lighthouse on the production build: desktop
+performance 100; mobile (simulated slow 4G) 90+, CLS 0, accessibility 100, SEO 100.
