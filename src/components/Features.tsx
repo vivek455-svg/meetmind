@@ -105,7 +105,7 @@ function CaptureIllustration() {
         <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white bg-[#3aa2ff]" style={{ width: u(5), height: u(5) }} />
       </span>
       <div
-        className="absolute left-1/2 -translate-x-1/2 overflow-hidden bg-[#c6e4ff] shadow-[0_1px_1px_rgb(0_0_0/0.25),inset_-2px_-2px_2px_rgb(0_0_0/0.15),inset_2px_2px_4px_rgb(2_2_2/0.15)] transition-transform duration-300 hover:scale-110"
+        className="absolute left-1/2 -translate-x-1/2 overflow-hidden bg-[#c6e4ff] shadow-[0_1px_1px_rgb(0_0_0/0.25),inset_-2px_-2px_2px_rgb(0_0_0/0.15),inset_2px_2px_4px_rgb(2_2_2/0.15)]"
         style={{ top: u(218.4), width: u(36), height: u(49), borderRadius: u(12), border: `${u(2)} solid #fff` }}
       >
         <span className="absolute left-1/2 flex -translate-x-1/2 items-center rounded-full bg-[#fee7e7]" style={{ top: u(9), gap: u(2), padding: `${u(1)} ${u(3)}`, fontSize: u(5), lineHeight: u(6) }}>
@@ -138,7 +138,7 @@ function CaptureIllustration() {
 function DocCard({ x, center, title, rows, footer }: { x?: number; center?: number; title: string; rows: string[][][]; footer: ReactNode }) {
   return (
     <div
-      className="absolute overflow-hidden rounded-[2px] border border-white bg-[#f7f7f7] shadow-[1px_1px_1px_rgb(0_0_0/0.25)] transition-transform duration-500 ease-[var(--ease-spring)] hover:-translate-y-1.5"
+      className="absolute overflow-hidden rounded-[2px] border border-white bg-[#f7f7f7] shadow-[1px_1px_1px_rgb(0_0_0/0.25)]"
       style={{
         left: center !== undefined ? `calc(50% + ${u(center)})` : u(x!),
         translate: center !== undefined ? "-50% 0" : undefined,
@@ -229,7 +229,7 @@ function UnderstandIllustration() {
       ))}
 
       <div
-        className="absolute left-1/2 overflow-hidden border-white shadow-[0_1px_1px_rgb(0_0_0/0.25)] transition-transform duration-500 hover:scale-105"
+        className="absolute left-1/2 overflow-hidden border-white shadow-[0_1px_1px_rgb(0_0_0/0.25)]"
         style={{ top: u(14.4), width: u(111), height: u(70), marginLeft: u(-55), borderWidth: u(1.25), borderStyle: "solid" }}
       >
         <Pic name="meetGrid" sizes="120px" tint="#d6dde5" />
@@ -272,7 +272,7 @@ function SyncIllustration() {
             {label}
           </span>
           <span
-            className="absolute grid place-items-center rounded-full bg-gradient-to-b from-[#389cf6] to-[#266ba9] text-white shadow-[1px_1px_1px_rgb(0_0_0/0.25)] transition-transform duration-300 ease-[var(--ease-spring)] hover:scale-125"
+            className="absolute grid place-items-center rounded-full bg-gradient-to-b from-[#389cf6] to-[#266ba9] text-white shadow-[1px_1px_1px_rgb(0_0_0/0.25)]"
             style={{ left: u(x), top: u(y), width: u(28), height: u(28), border: `${u(2.15)} solid #fff` }}
           >
             <Icon size="68%" weight="regular" />
@@ -281,7 +281,7 @@ function SyncIllustration() {
       ))}
 
       <div
-        className="group/list absolute left-1/2 -translate-x-1/2 rounded-[2.7px] border-[1.36px] border-white bg-[#f7f7f7] drop-shadow-[1.36px_1.36px_0.68px_rgb(0_0_0/0.25)]"
+        className="absolute left-1/2 -translate-x-1/2 rounded-[2.7px] border-[1.36px] border-white bg-[#f7f7f7] drop-shadow-[1.36px_1.36px_0.68px_rgb(0_0_0/0.25)]"
         style={{ top: u(110.4), width: u(189), height: u(156), marginLeft: u(0.5) }}
       >
         <span className="absolute left-1/2 -translate-x-1/2 rounded-full border border-[#38a1fe] bg-white" style={{ top: u(-4.4), width: u(5), height: u(5) }} />
@@ -298,7 +298,7 @@ function SyncIllustration() {
         {actions.map((a, i) => (
           <div
             key={a.t}
-            className="absolute flex items-center justify-between rounded-[4px] border-[0.5px] border-black/5 bg-white transition-transform duration-300 hover:translate-x-0.5"
+            className="absolute flex items-center justify-between rounded-[4px] border-[0.5px] border-black/5 bg-white"
             style={{ left: u(8.6), top: u(34.6 + i * 25), width: u(169), padding: u(4), fontSize: u(7) }}
           >
             <span className="flex items-center" style={{ gap: u(2) }}>
@@ -319,7 +319,7 @@ function SyncIllustration() {
           className="absolute flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-b from-[#3aa2ff] to-[#2c7cc5] text-white/95 shadow-[inset_2px_2px_4px_rgb(255_255_255/0.25)]"
           style={{ left: u(8.6), top: u(134.6), width: u(169), gap: u(3), padding: `${u(3)} ${u(8)}`, fontSize: u(7) }}
         >
-          <ArrowsClockwise className="transition-transform duration-700 group-hover/list:rotate-180" style={{ width: u(8), height: u(8) }} />
+          <ArrowsClockwise style={{ width: u(8), height: u(8) }} />
           Sync to tools
         </span>
       </div>
@@ -363,7 +363,7 @@ export function Features() {
         {cards.map(({ title, body, angle, w, Illustration }, i) => (
           <article
             key={title}
-            className="group flex flex-col gap-2 overflow-hidden rounded-[8px] border-[3px] border-white p-1.5 transition-[transform,box-shadow] duration-500 ease-[var(--ease-out-expo)] hover:-translate-y-1 hover:shadow-[0_18px_40px_-18px_rgb(30_110_200/0.45)]"
+            className="flex flex-col gap-2 overflow-hidden rounded-[8px] border-[3px] border-white p-1.5"
             style={{ backgroundImage: `linear-gradient(${angle}deg, #37a1ff 10%, #f7f7f7 90%)`, "--d": `${i * 120}ms` } as CSSProperties}
             data-reveal
           >
