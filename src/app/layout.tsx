@@ -39,7 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${GeistSans.variable} ${inria.variable} ${caveat.variable} antialiased`}>
       <body>
         <noscript>
-          <style>{`[data-reveal],.step-card{opacity:1!important;transform:none!important;clip-path:none!important;filter:none!important}.anim-scope *{animation-play-state:running!important}`}</style>
+          <style>{`[data-reveal],.step-card,.footer-wordmark>span{opacity:1!important;transform:none!important;clip-path:none!important;filter:none!important}.anim-scope *{animation-play-state:running!important}`}</style>
         </noscript>
         {children}
         <RevealObserver />
