@@ -47,12 +47,28 @@ export function RevealObserver() {
       { rootMargin: "80px 0px" },
     );
 
-    document.querySelectorAll("[data-reveal]").forEach((el) => once.observe(el));
+    const pending = new Set(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+    pending.forEach((el) => once.observe(el));
     document.querySelectorAll(".anim-scope").forEach((el) => live.observe(el));
+
+    // Elements in the last few pixels of the page can never cross the trigger line,
+    // so reveal whatever is left once the visitor reaches the bottom.
+    const onScroll = () => {
+      if (window.innerHeight + window.scrollY < document.documentElement.scrollHeight - 4) return;
+      pending.forEach((el) => {
+        if (el.classList.contains("is-in")) return;
+        el.classList.add("is-in");
+        el.querySelectorAll<HTMLElement>("[data-count]").forEach(countUp);
+        once.unobserve(el);
+      });
+      window.removeEventListener("scroll", onScroll);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
 
     return () => {
       once.disconnect();
       live.disconnect();
+      window.removeEventListener("scroll", onScroll);
     };
   }, []);
 
