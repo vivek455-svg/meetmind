@@ -1,8 +1,10 @@
 import type { CSSProperties, ReactNode } from "react";
 import { u } from "@/lib/u";
 import { Pic } from "./Pic";
+import { IntegrationPicker } from "./IntegrationPicker";
+import { nodeCls, Tooltip } from "./IntegrationTooltip";
 
-type Tool = { name: string; x: number; y: number; size: number; icon: ReactNode };
+export type Tool = { name: string; x: number; y: number; size: number; icon: ReactNode; detail: string; above?: boolean };
 
 const img = (src: string, size: number, alt: string) => <img src={src} alt={alt} width={size} height={size} className="size-full" />;
 const pic = (name: "appGmail" | "appWhatsapp" | "appZoom", alt: string) => (
@@ -11,30 +13,69 @@ const pic = (name: "appGmail" | "appWhatsapp" | "appZoom", alt: string) => (
   </span>
 );
 
+const SLACK = "Slack";
+
+// x/y are the node's top-left in the 1440px Figma frame
 const tools: Tool[] = [
-  { name: "Jira", x: 261, y: 171.4, size: 52, icon: img("/icons/jira.svg", 52, "Jira") },
-  { name: "Gmail", x: 373, y: 271.4, size: 55, icon: pic("appGmail", "Gmail") },
-  { name: "WhatsApp", x: 532, y: 321.4, size: 50, icon: pic("appWhatsapp", "WhatsApp") },
-  { name: "Telegram", x: 852, y: 321.4, size: 50, icon: img("/icons/telegram.svg", 50, "Telegram") },
-  { name: "Notion", x: 1003, y: 270.4, size: 46, icon: img("/icons/notion.svg", 46, "Notion") },
-  { name: "Zoom", x: 1096, y: 158.4, size: 50, icon: pic("appZoom", "Zoom") },
+  {
+    name: "Jira",
+    above: true,
+    x: 261,
+    y: 171.4,
+    size: 52,
+    icon: img("/icons/jira.svg", 52, "Jira"),
+    detail: "Action items become Jira issues automatically, complete with owners and due dates.",
+  },
+  {
+    name: "Gmail",
+    x: 373,
+    y: 271.4,
+    size: 55,
+    icon: pic("appGmail", "Gmail"),
+    detail: "Send a clean recap email to every attendee the moment the call ends — no copy-pasting notes.",
+  },
+  {
+    name: "WhatsApp",
+    x: 532,
+    y: 321.4,
+    size: 50,
+    icon: pic("appWhatsapp", "WhatsApp"),
+    detail: "Get the summary and your next steps on WhatsApp, even when you’re away from your desk.",
+  },
+  {
+    name: SLACK,
+    x: 682,
+    y: 345,
+    size: 45.7,
+    icon: img("/icons/slack.svg", 46, "Slack"),
+    detail: "Share all your meeting summaries and all the action items with your whole team.",
+  },
+  {
+    name: "Telegram",
+    x: 852,
+    y: 321.4,
+    size: 50,
+    icon: img("/icons/telegram.svg", 50, "Telegram"),
+    detail: "The Meetmind bot posts summaries to your Telegram groups so everyone stays in the loop.",
+  },
+  {
+    name: "Notion",
+    x: 1003,
+    y: 270.4,
+    size: 46,
+    icon: img("/icons/notion.svg", 46, "Notion"),
+    detail: "Every meeting becomes a structured Notion page with notes, decisions and tasks, neatly organised.",
+  },
+  {
+    name: "Zoom",
+    above: true,
+    x: 1096,
+    y: 158.4,
+    size: 50,
+    icon: pic("appZoom", "Zoom"),
+    detail: "Meetmind joins your Zoom calls on its own and starts capturing the conversation right away.",
+  },
 ];
-
-const nodeCls =
-  "grid place-items-center rounded-full border-[3px] border-white bg-page shadow-[0_4px_4px_rgb(0_0_0/0.25),inset_-2px_-2px_6px_rgb(0_0_0/0.2),inset_2px_2px_6px_rgb(0_0_0/0.2)] transition-[transform,box-shadow] duration-500 ease-[var(--ease-spring)] hover:-translate-y-1.5 hover:scale-110 hover:shadow-[0_14px_24px_-6px_rgb(0_60_140/0.45),inset_-2px_-2px_6px_rgb(0_0_0/0.2),inset_2px_2px_6px_rgb(0_0_0/0.2)]";
-
-function Tooltip({ className = "", style }: { className?: string; style?: CSSProperties }) {
-  return (
-    <div className={`relative rounded-[6px] bg-gradient-to-b from-[#8fbee8] to-[#418dd1] px-1 pb-1 pt-3.5 ${className}`} style={style}>
-      <svg viewBox="0 0 27 26" className="absolute left-1/2 top-[-17px] h-[26px] w-[26.5px] -translate-x-1/2" aria-hidden>
-        <path d="M0 26L13.5 0L26.5 26H0Z" fill="#8CBCE7" />
-      </svg>
-      <p className="relative rounded-[3px] bg-white px-2.5 py-3 text-left text-[16px] text-black/75">
-        Share all your meeting summaries and all the action items with your whole team.
-      </p>
-    </div>
-  );
-}
 
 function Copy({ scaled }: { scaled?: boolean }) {
   const s = (n: number) => (scaled ? u(n) : `${n}px`);
@@ -58,7 +99,7 @@ export function Integrations() {
     <section className="relative overflow-hidden bg-[linear-gradient(180deg,#0e66b5_0%,rgb(50_153_246/0.6)_40%,rgb(247_247_247/0)_100%)]">
       {/* ≥1280px: scattered constellation exactly as designed */}
       <div className="scale-box anim-scope mx-auto hidden max-w-[1440px] xl:block" style={{ aspectRatio: "1440 / 659", "--w": 1440 } as CSSProperties}>
-        <div className="scale-inner">
+        <div className="scale-inner tools-layer">
           <svg viewBox="0 0 820 184" fill="none" className="absolute" style={{ left: u(311), top: u(198.4), width: u(817.5), height: u(182.5) }} aria-hidden>
             <path
               className="dash-flow"
@@ -73,47 +114,50 @@ export function Integrations() {
             <Copy scaled />
           </div>
 
-          {/* Slack — the hub */}
-          <div className="absolute left-1/2 flex -translate-x-1/2 flex-col items-center" style={{ top: u(345) }} data-reveal="scale">
-            <span className={`${nodeCls} animate-float`} style={{ padding: u(12), "--d": "-1s" } as CSSProperties}>
-              <img src="/icons/slack.svg" alt="Slack" style={{ width: u(45.7), height: u(44.7) }} />
-            </span>
-            <Tooltip style={{ width: u(288), marginTop: u(30) }} />
-          </div>
-
           {tools.map((t, i) => (
-            <div key={t.name} className="absolute" style={{ left: u(t.x), top: u(t.y) }}>
-              <div data-reveal="scale" style={{ "--d": `${150 + Math.abs(i - 2.5) * 110}ms` } as CSSProperties}>
-                <span className={`${nodeCls} animate-float`} style={{ padding: u(12), "--d": `${-i * 0.7}s` } as CSSProperties} title={t.name}>
-                  <span className="block" style={{ width: u(t.size), height: u(t.size) }}>
-                    {t.icon}
-                  </span>
-                </span>
+            <div
+              key={t.name}
+              className={`tool absolute ${t.name === SLACK ? "is-default" : ""}`}
+              style={{ left: u(t.x), top: u(t.y) }}
+            >
+              <div data-reveal="scale" style={{ "--d": `${150 + Math.abs(i - 3) * 110}ms` } as CSSProperties}>
+                <div className="animate-float" style={{ "--d": `${-i * 0.7}s` } as CSSProperties}>
+                  <button
+                    type="button"
+                    aria-label={`${t.name}: ${t.detail}`}
+                    className={`tool-node ${nodeCls} cursor-pointer`}
+                    style={{ padding: u(12) }}
+                  >
+                    <span className="block" style={{ width: u(t.size), height: u(t.size) }}>
+                      {t.icon}
+                    </span>
+                  </button>
+                </div>
               </div>
+              <Tooltip
+                name={t.name}
+                detail={t.detail}
+                above={t.above}
+                className={`tool-tip absolute left-1/2 ${t.above ? "is-above" : ""}`}
+                style={{
+                  width: u(288),
+                  fontSize: u(16),
+                  lineHeight: 1.35,
+                  ...(t.above ? { bottom: `calc(100% + ${u(24)})` } : { top: `calc(100% + ${u(30)})` }),
+                }}
+              />
             </div>
           ))}
         </div>
       </div>
 
-      {/* < 1280px: stacked */}
+      {/* < 1280px: stacked, tap an icon to swap the detail */}
       <div className="flex flex-col items-center gap-10 px-5 pb-20 pt-[72px] xl:hidden">
         <Copy />
-        <div className="flex max-w-[560px] flex-wrap justify-center gap-4" data-reveal>
-          {[tools[0], tools[1], tools[2]].map((t) => (
-            <span key={t.name} className={`${nodeCls} p-2.5`} title={t.name}>
-              <span className="block size-10">{t.icon}</span>
-            </span>
-          ))}
-          <span className={`${nodeCls} p-2.5`} title="Slack">
-            <img src="/icons/slack.svg" alt="Slack" className="size-10" />
-          </span>
-          {[tools[3], tools[4], tools[5]].map((t) => (
-            <span key={t.name} className={`${nodeCls} p-2.5`} title={t.name}>
-              <span className="block size-10">{t.icon}</span>
-            </span>
-          ))}
-        </div>
-        <Tooltip className="mt-2 w-full max-w-[288px]" />
+        <IntegrationPicker
+          tools={tools.map(({ name, detail, icon }) => ({ name, detail, icon }))}
+          defaultName={SLACK}
+        />
       </div>
     </section>
   );

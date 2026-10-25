@@ -473,3 +473,67 @@ body {
 .footer-landscape {
   animation: float 18s ease-in-out infinite;
 }
+
+/* ---------- Integration details ---------- */
+
+.tool {
+  z-index: 1;
+}
+.tool:is(:hover, :focus-within) {
+  z-index: 5;
+}
+.tool-tip {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -10px) scale(0.94);
+  transform-origin: 50% 0;
+  transition:
+    opacity 0.28s ease,
+    transform 0.55s var(--ease-spring),
+    visibility 0s linear 0.55s;
+}
+.tool-tip.is-above {
+  transform: translate(-50%, 10px) scale(0.94);
+  transform-origin: 50% 100%;
+}
+.tool:is(:hover, :focus-within) .tool-tip,
+.tool.is-default .tool-tip {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0) scale(1);
+  transition-delay: 0s;
+}
+/* Slack's detail steps aside while another tool is being explored */
+.tools-layer:has(.tool:not(.is-default):is(:hover, :focus-within)) .tool.is-default .tool-tip {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -10px) scale(0.94);
+  transition:
+    opacity 0.2s ease,
+    transform 0.4s var(--ease-out-expo),
+    visibility 0s linear 0.4s;
+}
+.tool-node:is(:hover, :focus-visible) {
+  transform: translateY(-6px) scale(1.1);
+}
+/* the rest of the constellation softens so the hovered tool stands out */
+.tools-layer:has(.tool:is(:hover, :focus-within)) .tool:not(:hover, :focus-within) .tool-node {
+  opacity: 0.6;
+}
+.tool-node:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.tip-swap {
+  animation: tip-in 0.5s var(--ease-spring) both;
+}
+@keyframes tip-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+}
