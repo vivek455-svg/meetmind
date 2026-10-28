@@ -14,10 +14,10 @@ const underline =
 
 export function Footer() {
   return (
-    <footer className="relative flex flex-col items-center justify-between overflow-hidden border-t border-black/[0.06] bg-gradient-to-b from-[#288ee8] to-[#2f9cfc] pt-20 md:h-[968px]">
+    <footer className="relative flex flex-col items-center justify-between overflow-hidden border-t border-black/[0.06] bg-gradient-to-b from-[#288ee8] to-[#2f9cfc] pt-20 md:h-[851px] md:pt-[90px]">
       {/* Landscape, faded in through a soft ellipse and a top-to-bottom ramp (Figma "Footer Artwork") */}
       <div aria-hidden className="footer-artwork pointer-events-none absolute inset-0">
-        <div className="absolute left-[calc(50%-15.5px)] top-[calc(50%-0.84px)] aspect-[1619/1005] w-[max(112.43%,1619px)] -translate-x-1/2 -translate-y-1/2">
+        <div className="absolute left-[calc(50%-15.5px)] top-[calc(50%-0.3px)] aspect-[1619/1005] w-[max(112.43%,1619px)] -translate-x-1/2 -translate-y-1/2">
           <Pic
             name="footerLandscape"
             sizes="(min-width: 1440px) 113vw, 1619px"
@@ -29,15 +29,15 @@ export function Footer() {
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgb(46_156_252/0.55)_45%,rgb(46_156_252/0)_75%)]" />
       </div>
 
-      <div className="relative w-full max-w-[1200px] px-5 xl:px-0" data-reveal>
+      <div className="relative w-full max-w-[1280px] px-5 xl:px-0" data-reveal>
         <div className="flex flex-col justify-between gap-12 pb-16 md:flex-row">
           <div className="flex w-[280px] flex-col gap-4">
-            <Logo className="!text-white/90" />
+            <Logo className="!text-[32px] !leading-[42px] !text-white/90" />
             <p className="text-[15px] leading-[22px] text-white/75">Automatically records meetings, creates summaries and captures action items.</p>
           </div>
-          <nav className="flex flex-wrap gap-x-8 gap-y-10" aria-label="Footer">
+          <nav className="flex flex-wrap gap-x-10 gap-y-10" aria-label="Footer">
             {cols.map((c) => (
-              <div key={c.h} className="flex flex-col gap-3.5">
+              <div key={c.h} className="flex flex-col gap-3.5 leading-5">
                 <p className="text-[15px] font-medium uppercase tracking-[0.06em] text-white/90">{c.h}</p>
                 {c.links.map(([label, href]) => (
                   <a key={label} href={href} className={link}>
@@ -50,7 +50,7 @@ export function Footer() {
           </nav>
         </div>
         <div className="h-px w-full bg-white/30" />
-        <div className="flex flex-col justify-between gap-3 py-6 text-[14px] text-white/75 sm:flex-row">
+        <div className="flex flex-col justify-between gap-3 py-6 text-[14px] leading-[18px] text-white/75 sm:flex-row">
           <p>© 2026 Meetmind, Inc. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="#top" className={link.replace("text-[15px] ", "")}>
